@@ -55,40 +55,47 @@ const MaintenanceEntry = () =>{
 
     return(
         <>
-            <div style={{width:"700px",height:"700px",display:"flex",flexDirection:"column",alignItems:"center",alignContent:"center",backgroundColor:"red"}}>
+            <div style={styles.container}>
 
-                <div style={{width:"100%",backgroundColor:"silver",padding:"10px 0"}}>
-                    <h1>Enter Info: </h1>
+                <div style={styles.titleContainer}>
+                    <h2 >Create Maintenance Record</h2>
                 </div>
                 
                 
-                <form style={{padding:"10px 0",backgroundColor:"black", width:"500px"}} onSubmit={handleSubmit}>
-                    <div style={{width:"400px",height:"100px",display:"flex",gap:"10px",alignItems:"center"}}>
+                <form style={styles.formContainer} onSubmit={handleSubmit}>
+
+                     {/* Input Date*/}
+                     <div style={styles.dateContainer}>
+                        <label style={{width:"50%"}} htmlFor="maintenance-txtbox">Date:</label>
+                        <input style={{width:"50%"}} type="date" id="maintenance-txtbox" onChange={(e) => setDate(e.target.value)}></input>
+                    </div>
+
+                    {/* Input Miles*/}
+                    <div style={styles.milesContainer}>
                         <label style={{width:"50%"}} htmlFor="miles-txt-box">Input Miles: </label>
                         <input style={{width:"50%"}} type="text" id="miles-txt-box" onChange={(e) => setMiles(e.target.value)}></input>
 
                     </div>
-                    <div style={{width:"400px",height:"25px",display:"flex",gap:"10px"}}>
-                        <label style={{width:"50%"}} htmlFor="maintenance-txtbox">Date:</label>
-                        <input style={{width:"50%"}} type="date" id="maintenance-txtbox" onChange={(e) => setDate(e.target.value)}></input>
-                    </div>
-                    <div style={{width:"400px",height:"200px",display:"flex",flexDirection:"column",gap:"10px",paddingTop:"30px"}}>
-                        <label htmlFor="maintenance-txtbox">Maintenance:</label>
+
+                   
+
+                    {/* Input Maintenance*/}
+                    <div style={styles.maintenanceContainer}>
+                        <div style={styles.milesContainer}>
+                            <label htmlFor="maintenance-txtbox">Maintenance:</label>
+                        </div>
+                        
                         <textarea style={{height:"200px"}} type="textarea" id="maintenance-txtbox" onChange={(e) => setMaintenanceList(e.target.value)}></textarea>
                     </div>
 
                     <div>
-                    <button type="submit"
-                        style={{
-                            backgroundColor: 'green',
-                            color: 'white',
-                            padding: '10px',
-                            border: 'none',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Submit
-                    </button>
+                    
+                    <div style={styles.buttonContainer}>
+                        <button type="submit"style={styles.button}>
+                            Submit
+                        </button>
+                    </div>
+                    
                     </div>
                 </form>
                 
@@ -96,6 +103,73 @@ const MaintenanceEntry = () =>{
            
         </>
     );
+}
+
+const styles= {
+    container:{
+        width:"700px",
+        height:"700px",
+        display:"flex",
+        flexDirection:"column",
+        backgroundColor:"red",
+        alignItems:"center"
+
+    },
+    titleContainer:{
+        width:"100%",
+        padding:"10px 0",
+        textAlign:"center"
+    },
+
+    formContainer:{
+        padding:"10px 0",
+        width:"100%",
+        background:"green",
+        display:"flex",
+        flexDirection:"column",
+        alignItems:"center",
+        gap:"20px",
+        
+
+    },
+    milesContainer:{
+        width:"400px",
+        display:"flex",
+        padding:"10px 0",
+        background:"blue"
+        
+    },
+    dateContainer:{
+        width:"400px",
+        display:"flex",
+        padding:"10px 0",
+        
+
+    
+    },
+    maintenanceContainer:{
+        width:"400px",
+        display:"flex",
+        flexDirection:"column",
+        gap:"10px",
+        paddingTop:"30px"
+    },
+    buttonContainer:{
+        width:"400px",
+        display:"flex",
+        justifyContent:"flex-end",
+        backgroundColor:"silver"
+    },
+    button:{
+        backgroundColor:"green",
+        color:"white",
+        padding:"10px",
+        margin:"10px 0",
+        border:"none",
+        cursor:"pointer",
+        
+    },
+
 }
 
 export default MaintenanceEntry;
