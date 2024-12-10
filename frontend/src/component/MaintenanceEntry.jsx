@@ -1,8 +1,10 @@
 
 // Thi is where we enter Miles, Maintenance and Date of service for the car
 import React,{useState} from 'react';
+import FileUpload from "../../../../Talos/frontend/src/components/FileUpload";
+
 const HOST_URL = import.meta.env.VITE_API_URL;
-const debug = "localhost:5100";
+    const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
 
 const MaintenanceEntry = () =>{
 
@@ -30,7 +32,7 @@ const MaintenanceEntry = () =>{
 
         try{
             //Make the post request to the backend
-            const response = await fetch(`http://localhost:5100/api/maintenanceLogs`, {
+            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs`, {
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json'
@@ -66,18 +68,17 @@ const MaintenanceEntry = () =>{
 
                      {/* Input Date*/}
                      <div style={styles.dateContainer}>
-                        <label style={{width:"50%"}} htmlFor="maintenance-txtbox">Date:</label>
+                        <label  htmlFor="maintenance-txtbox">Date:</label>
                         <input style={{width:"50%"}} type="date" id="maintenance-txtbox" onChange={(e) => setDate(e.target.value)}></input>
                     </div>
 
                     {/* Input Miles*/}
                     <div style={styles.milesContainer}>
-                        <label style={{width:"50%"}} htmlFor="miles-txt-box">Input Miles: </label>
-                        <input style={{width:"50%"}} type="text" id="miles-txt-box" onChange={(e) => setMiles(e.target.value)}></input>
+                        <label  htmlFor="miles-txt-box">Input Miles: </label>
+                        <input  type="text" id="miles-txt-box" onChange={(e) => setMiles(e.target.value)}></input>
 
                     </div>
 
-                   
 
                     {/* Input Maintenance*/}
                     <div style={styles.maintenanceContainer}>
@@ -90,6 +91,12 @@ const MaintenanceEntry = () =>{
 
                     <div>
                     
+                    {/* Section to upload a file  */}
+                    <div>
+                        <FileUpload />
+                    </div>
+                    
+
                     <div style={styles.buttonContainer}>
                         <button type="submit"style={styles.button}>
                             Submit
@@ -111,7 +118,7 @@ const styles= {
         height:"700px",
         display:"flex",
         flexDirection:"column",
-        backgroundColor:"red",
+        
         alignItems:"center"
 
     },
@@ -124,7 +131,7 @@ const styles= {
     formContainer:{
         padding:"10px 0",
         width:"100%",
-        background:"green",
+       
         display:"flex",
         flexDirection:"column",
         alignItems:"center",
@@ -133,17 +140,17 @@ const styles= {
 
     },
     milesContainer:{
-        width:"400px",
+        width:"300px",
         display:"flex",
         padding:"10px 0",
-        background:"blue"
         
+        justifyContent:"space-between"
     },
     dateContainer:{
-        width:"400px",
+        width:"300px",
         display:"flex",
         padding:"10px 0",
-        
+        justifyContent:"space-between"
 
     
     },
@@ -158,7 +165,7 @@ const styles= {
         width:"400px",
         display:"flex",
         justifyContent:"flex-end",
-        backgroundColor:"silver"
+        
     },
     button:{
         backgroundColor:"green",

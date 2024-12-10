@@ -1,7 +1,9 @@
 // This is to display card components that show maintenance history.
 import React,{useState} from 'react';
-import deleteImage from '../assets/x.svg'
+import deleteImage from '../assets/x.svg';
+import { Link } from 'react-router-dom';
 const HOST_URL = import.meta.env.VITE_API_URL;
+const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
 const MaintenanceCard = ({ log,onUpdate,onDelete }) => 
 {
    
@@ -28,7 +30,7 @@ const MaintenanceCard = ({ log,onUpdate,onDelete }) =>
         try{
             //Make the post request to the backend
             
-            const response = await fetch(`${HOST_URL}/api/maintenanceLogs/${log.id}`, {
+            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs/${log.id}`, {
                 method: 'PUT',
                 headers:{
                     'Content-Type': 'application/json'
@@ -55,7 +57,7 @@ const MaintenanceCard = ({ log,onUpdate,onDelete }) =>
     //handle delete of a button
     const handleDelete = async() =>{
         try{
-            const response = await fetch(`${HOST_URL}/api/maintenanceLogs/${log.id}`, {
+            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs/${log.id}`, {
                 method:'DELETE',
                 headers:{
                     'Content-Type': 'application/json'
@@ -74,43 +76,63 @@ const MaintenanceCard = ({ log,onUpdate,onDelete }) =>
             console.error("Error:", error)
         }
     }
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let logDate = new Date(date);
+
+    const formatter = new Intl.NumberFormat('en-US');
+    const milesFormatted = formatter.format(miles);
+
+    const targetUrl = `/report/${log.id}`;
 
     return(
         <div style={styles.card}>
-            <div>
-                {/* For prod: ./x.svg for dev its ../src/assets */}
-                <button  type="button" onClick={handleDelete}><img src={deleteImage} style={styles.icon} /></button>
-            </div>
-            <h3>Date:</h3>
-            {edit ? (
-                <input type="date" value={date}  onChange={(e) => setDate(e.target.value)} />
-            ) : (
-                <p>{date}</p>
-            )}
 
-          <h4>id:{log.id}</h4>
-          
-          <h3>Miles:</h3>
-            {edit ? (
-                <input type="number" value={miles}  onChange={(e) => setMiles(e.target.value)} />
-            ) : (
-                <p> {miles}</p>
-            )}
-
-            <p><strong>Maintenance:</strong></p>
-            {edit ? (
-                    <ul>
-                        <textarea value={maintenance}  onChange={(e) => setMaintenance(e.target.value)}/>
-                    </ul>
+            <div style={styles.deleteContainer}>
+                <h3>ID: {log.id}</h3>
                 
+                <button style={styles.deleteButton} type="button" onClick={handleDelete}><img src={deleteImage} style={styles.icon} /></button>
+            </div>
+
+            {/* Date  */}
+            <div style={styles.inputContainer}>
+                <h3>Date:</h3>
+                {edit ? (
+                    <input type="date" value={date}  onChange={(e) => setDate(e.target.value)} />
                 ) : (
-                    <ul>
-                        <p>{maintenance}</p>
-                    </ul>
+                    <p>{logDate.toLocaleDateString("en-US", options)}</p>
                 )}
-               
-          <button onClick={handleEditClick}>{edit ? "Cancel Edit" : "Edit"}</button>
-         <button onClick={handleSubmit} style={edit ? styles.editOn: styles.test}> Submit Change</button>
+            </div>
+           
+            {/* Miles */}
+            <div style={styles.inputContainer}>
+                <h3>Miles:</h3>
+                {edit ? (
+                    <input type="number" value={miles}  onChange={(e) => setMiles(e.target.value)} />
+                ) : (
+                    <p> {milesFormatted}</p>
+                )}
+            </div>
+            
+            {/* Maintenance */}
+            <div tyle={styles.maintenanceContainer}>
+                <h3>Maintenance:</h3>
+                {edit ? (
+                    <textarea value={maintenance} style={{height:"200px",width:"90%",resize:"none", padding:"0 20px", fontSize:'1rem'}}  onChange={(e) => setMaintenance(e.target.value)}/>
+                ) : (
+                    <p>{maintenance}</p>
+                )}
+            </div>
+            
+            <div style={styles.editContainer}>
+                <button onClick={handleEditClick} style={edit? styles.editButton : styles.cancelEditButton}>{edit ? "Cancel Edit" : "Edit"}</button>
+                <button onClick={handleSubmit} style={edit ? styles.editOn: styles.test}> Submit Change</button>
+                
+            </div>
+
+            <div style={styles.viewMoreContainer}>
+                <Link to={targetUrl} state={{log}}>View More</Link>
+            </div>
+          
         </div>
     );
 }
@@ -119,25 +141,69 @@ const MaintenanceCard = ({ log,onUpdate,onDelete }) =>
 
 const styles = {
     card : {
+        width:"500px",
         padding: "20px",
+        margin:"20px 0",
         border: "1px solid #ccc",
         borderRadius: "10px",
         boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
         backgroundColor: "#f9f9f9",
         textAlign: "left",
-        color:"black"
+        color:"black",
+        fontSize:"1.1rem"
     },
 
     test:{
         display:"none"
     },
+    editButton:{
+        backgroundColor:"red"
+    },
+    cancelEditButton:{
+        backgroundColor:"yellow",
+        color:"black"
+    },
     editOn:{
-        display:"block"
+        display:"block",
+        backgroundColor:"green"
     },
 
     icon:{
-        height:"15px",
-        width:"15px"
+        height:"20px",
+        width:"20px",
+        
+    },
+    inputContainer:{
+        width:"300px",
+        display:"flex",
+        gap:"30px",
+        alignItems:"center",
+        
+
+    
+    },
+    maintenanceContainer:{
+        display:"flex",
+        flexDirection:"column",
+        paddingTop:"30px"
+    },
+    deleteContainer:{
+        display:"flex",
+        justifyContent:"space-between"
+
+    },
+    deleteButton:{
+        backgroundColor:"white"
+    },
+    editContainer:{
+        display:"flex",
+        justifyContent: "space-between",
+        padding:"20px 0"
+    },
+    viewMoreContainer:{
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center"
     }
 }
     

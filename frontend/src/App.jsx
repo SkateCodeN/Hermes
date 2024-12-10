@@ -2,7 +2,7 @@
 import { Routes, Route, BrowserRouter, Link} from 'react-router-dom';
 import './App.css'
 import MaintenanceEntry from './component/MaintenanceEntry';
-
+import Report from './component/Report';
 import MaintenanceLogs from './component/MaintenanceLogs';
 function App() {
   
@@ -21,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MaintenanceLogs />} />
           <Route path="/create" element={<MaintenanceEntry />} />
+          <Route path="/report/:id" element={<Report />} />
         </Routes>
       </BrowserRouter>
     </>
