@@ -1,4 +1,5 @@
 const db = require('./CRUD.cjs')
+const fs = require('fs');
 
 const maintenanceLogs = {
     //Read and get all items on DB
@@ -48,7 +49,26 @@ const maintenanceLogs = {
         const {rows} = await db.query(query, values);
 
         return rows[0];
-    }
+    },
+    uploadImage: async(data) =>{
+        const{name,imgData} = data;
+
+        const query =`INSERT INTO images (name,data) VALUES ($1, $2)`;
+        // imgData is a path
+        const imgDataBinary = fs.readFileSync(imgData);
+        const values = [name, imgDataBinary]
+        const {rows} = await db.query(query,values);
+        return rows[0]
+    },
+    getImageFromDB: async(id) =>{
+
+        const query=`SELECT name, data FROM images WHERE id=$1`;
+        const values = [id];
+
+        const {rows} = await db.query(query, values);
+
+        return rows[0];
+    },
 
 }
 

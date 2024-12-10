@@ -21,7 +21,7 @@ router.get( '/', async (req, res) => {
 //Create a new maintenance record
 router.post( '/', async (req, res) => {
     try {
-        const record= await maintenanceLogs.create(req.body);
+        const record = await maintenanceLogs.create(req.body);
         res.status(201).json(record);
 
     }
@@ -75,5 +75,38 @@ router.delete("/:id", async (req,res) => {
     res.status(200).json({ message: 'Maintenance log deleted successfully' });
     
 })
+
+//get image
+router.get( '/image/:id', async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const getImage = await maintenanceLogs.getImageFromDB();
+        res.json(records);
+        
+    }
+    catch (error){
+        console.error(error)
+
+        res.status(500).json({ error: 'Failed to fetch Image Data' });
+    }
+    
+});
+
+
+router.post( '/postImage', async (req, res) => {
+    try {
+        const record = await maintenanceLogs.uploadImage(req.body);
+        res.status(201).json(record);
+
+    }
+    catch (error){
+        console.error(error)
+
+        res.status(500).json({ error: 'Failed to upload Image' });
+    }
+    
+});
+
 
 module.exports = router;
