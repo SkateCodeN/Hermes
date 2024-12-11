@@ -4,7 +4,7 @@ import React,{useState} from 'react';
 import FileUpload from "../../../../Talos/frontend/src/components/FileUpload";
 
 const HOST_URL = import.meta.env.VITE_API_URL;
-    const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
+const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
 
 const MaintenanceEntry = () =>{
 

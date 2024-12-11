@@ -3,7 +3,7 @@
 import React,{useState,useEffect} from 'react';
 import MaintenanceCard from './MaintenanceCard';
 const HOST_URL = import.meta.env.VITE_API_URL;
-
+const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
 const maintenanceLogs = () =>{
 
     const [logs,setLogs] = useState([]);
@@ -17,7 +17,7 @@ const maintenanceLogs = () =>{
     //HTTP requesst to fetch logs and set them in state
     const fetchLogs = async() => {
         try{
-            const response = await fetch(`${HOST_URL}/api/maintenanceLogs`);
+            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs`);
             if(!response.ok) throw new Error('Failed to fetch logs');
             const data = await response.json();
             setLogs(data);

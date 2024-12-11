@@ -4,6 +4,7 @@ import './App.css'
 import MaintenanceEntry from './component/MaintenanceEntry';
 import Report from './component/Report';
 import MaintenanceLogs from './component/MaintenanceLogs';
+import UploadImage from './component/UploadImage';
 function App() {
   
   return (
@@ -15,13 +16,14 @@ function App() {
           </div>
           <Link to="/create">Create</Link>
           <div>
-            
+            <Link to="/uploadImg">Upload</Link>
           </div>
         </nav>
         <Routes>
           <Route path="/" element={<MaintenanceLogs />} />
           <Route path="/create" element={<MaintenanceEntry />} />
           <Route path="/report/:id" element={<Report />} />
+          <Route path="/uploadImg" element={<UploadImage />} />
         </Routes>
       </BrowserRouter>
     </>

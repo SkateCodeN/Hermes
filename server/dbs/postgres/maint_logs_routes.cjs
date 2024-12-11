@@ -76,28 +76,39 @@ router.delete("/:id", async (req,res) => {
     
 })
 
-//get image
+//get image based on id
 router.get( '/image/:id', async (req, res) => {
     const {id} = req.params;
 
     try {
-        const getImage = await maintenanceLogs.getImageFromDB();
-        res.json(records);
+        const image = await maintenanceLogs.getImageFromDB(id);
+       // res.set("Content-Type", 'image/jpeg');
+       // res.send(image.data);
         
+        if(!image){
+            return res.status(404).json({error: "Image not found with that ID"})
+        }
+
+        // Send name and binary data as base64
+        res.json({
+            name: image.name,
+            data: image.data.toString('base64')
+        })
     }
     catch (error){
-        console.error(error)
+        console.error("Error fetching image",error);
 
         res.status(500).json({ error: 'Failed to fetch Image Data' });
     }
     
 });
 
-
+//route to post an image
 router.post( '/postImage', async (req, res) => {
     try {
         const record = await maintenanceLogs.uploadImage(req.body);
         res.status(201).json(record);
+        //console.log('Made it to server post')
 
     }
     catch (error){
@@ -108,5 +119,16 @@ router.post( '/postImage', async (req, res) => {
     
 });
 
+router.get('/images', async (req,res) =>{
+    try{
+        const images = await maintenanceLogs.getImages();
+        res.json(images);
+    }
+    catch(error){
+        console.log("Error getting images")
+    }
+    
+
+})
 
 module.exports = router;

@@ -58,7 +58,9 @@ const maintenanceLogs = {
         const imgDataBinary = fs.readFileSync(imgData);
         const values = [name, imgDataBinary]
         const {rows} = await db.query(query,values);
-        return rows[0]
+        return { record: rows[0] }
+        //console.log(`Made it to about to call the DB, data: ${name} and path: ${imgData}`)
+        //return { test: "test Was made"}
     },
     getImageFromDB: async(id) =>{
 
@@ -66,9 +68,21 @@ const maintenanceLogs = {
         const values = [id];
 
         const {rows} = await db.query(query, values);
-
+        if(rows.length === 0) throw new Error("Image not foun in DB")
+        
+       
         return rows[0];
     },
+    getImages: async () =>{
+        const query = `SELECT * FROM images ORDER BY id ASC`;
+        const{ rows} = await db.query(query);
+
+        if(rows.length === 0){
+            console.Error("Not able to get images from DB ")
+        }
+        return rows;
+
+    }
 
 }
 
