@@ -80,7 +80,14 @@ const maintenanceLogs = {
         if(rows.length === 0){
             console.Error("Not able to get images from DB ")
         }
-        return rows;
+         // Convert each image's binary data to Base64
+        const images = rows.map((row) => ({
+            id: row.id,
+            name: row.name,
+            data: row.data.toString('base64'), // Convert binary data to Base64
+        }));
+
+        return images;
 
     }
 
