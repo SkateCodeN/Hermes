@@ -1,17 +1,24 @@
 import React,{useState,useEffect} from 'react';
+import UploadImageBox from '../../../../Talos/frontend/src/components/UploadFileBox';
 const HOST_URL = import.meta.env.VITE_API_URL;
 const SERVER_HOST_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:5100" :  HOST_URL;
+const UPLOAD_URL = import.meta.env.VITE_UPLOAD_API_URL;
+const SERVER_UPLOAD_URL =  import.meta.env.VITE_ENV_CODE === "Debug" ?  "http://localhost:3000" :  UPLOAD_URL;
 const UploadImage = () =>{
 
     const [imgUrlPath, setImgUrlPath] = useState("")
     const [imgName, setImgName] = useState("");
+    const [image, setImage] = useState(null);
     
     useEffect( () => {
         //testUpload();
-        fetchImage();
+        //fetchImage();
     },[]);
 
-    const imgPath = 'C:/Users/Guillermo Reyes/Documents/ReactProjects/VagProject/img/Rock Auto Oxygen sensors.png'
+    const handleImgUpdate = (image) =>{
+        setImage(image);
+    }
+
     const testUpload = async() =>{
         const payload ={
            name: "test Image",
@@ -38,9 +45,9 @@ const UploadImage = () =>{
 
     }
 
-    const fetchImage = async() =>{
+    const fetchImage = async(id) =>{
         try{
-            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs/image/1`);
+            const response = await fetch(`${SERVER_HOST_URL}/api/maintenanceLogs/image/${id}`);
             if(!response.ok){
                 throw new Error("Response failed to fetch image")
             }
@@ -58,16 +65,29 @@ const UploadImage = () =>{
         }
     }
     return(
-        <>
-            <h1>Image</h1>
-            <img src={"../src/assets/test.png"} height="50px" />
+        <> 
+        <div style={styles.container}>
             <div>
-                <p>Image from DB</p>
-                <p>Name: {imgName}</p>
-                {imgUrlPath ? <img src={imgUrlPath} height="100px" /> : <p>Loading ...</p>}
+                <label for="imgName" >Enter Img Name:</label>
+                <input type='text' id="imgName" ></input>
             </div>
+            
+            <UploadImageBox onImgUpdate={handleImgUpdate}/>
+            <div>
+                { image && <p>{image.name}</p>}
+            </div>
+            
+        </div>
+            
         </>
     )
 }
 
+const styles = {
+    container: {
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"center"
+    }
+}
 export default UploadImage;

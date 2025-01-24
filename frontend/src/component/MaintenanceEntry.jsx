@@ -57,7 +57,7 @@ const MaintenanceEntry = () =>{
 
     return(
         <>
-            <div style={styles.container}>
+            <div style={styles.card}>
 
                 <div style={styles.titleContainer}>
                     <h2 >Create Maintenance Record</h2>
@@ -92,9 +92,13 @@ const MaintenanceEntry = () =>{
                     <div>
                     
                     {/* Section to upload a file  */}
+                    {/* The issue here is handling when a remote user wants to save an image. I want to send the image to what will be a remote DB. Ditto with files */}
+                    {/* 
                     <div>
                         <FileUpload />
                     </div>
+                    */}
+                    
                     
 
                     <div style={styles.buttonContainer}>
@@ -121,6 +125,18 @@ const styles= {
         
         alignItems:"center"
 
+    },
+    card : {
+        width:"500px",
+        padding: "20px",
+        margin:"20px 0",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+        backgroundColor: "#f9f9f9",
+        textAlign: "left",
+        color:"black",
+        fontSize:"1.1rem"
     },
     titleContainer:{
         width:"100%",

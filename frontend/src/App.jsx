@@ -15,13 +15,18 @@ function App() {
           <div>
             <Link to="/">Home</Link>
           </div>
-          <Link to="/create">Create</Link>
+          <div>
+            <Link to="/create">Create</Link>
+          </div>
+          {/* 
           <div>
             <Link to="/uploadImg">Upload</Link>
           </div>
+
           <div>
-          <Link to="/images">Images</Link>
+            <Link to="/images">Images</Link>
           </div>
+          */}
         </nav>
         <Routes>
           <Route path="/" element={<MaintenanceLogs />} />
