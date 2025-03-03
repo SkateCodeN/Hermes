@@ -1,7 +1,7 @@
 const {Pool} = require ("pg");
 //is the same as import {pool} from "pg"
 
-//Import .env variables
+//Import .env variables need to install dotenv 
 require('dotenv').config();
 
 
@@ -13,7 +13,6 @@ const pool = new Pool({
     database: process.env.DB_NAME,
   });
 
-module.exports ={
+module.exports = {
     query:(text,params) => pool.query(text,params),
-
 };

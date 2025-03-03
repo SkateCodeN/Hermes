@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const db = require('./dbs/connectPostgres.cjs');
+
 const path = require('path');
 const maintenanceRoutes = require('./dbs/postgres/maint_logs_routes.cjs')
 const cors = require('cors');
